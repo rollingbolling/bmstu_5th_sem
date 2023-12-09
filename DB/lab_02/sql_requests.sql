@@ -177,3 +177,18 @@ with dupl(Row) as (select row_number()
 				   over (partition by roomnumber order by namep) as row 
 				   from pet)
 select * from dupl where row = 1;
+
+--имя врача, кличка питомца, duration, namediseas, причины по заданному заболеванию
+select d.namedoc, p.namep, pt.duration, dis.namedis, dis.reasons
+from pet as p
+
+join doctor_pet on p.id = doctor_pet.id_pet
+join doctor as d on d.id = doctor_pet.id_doctor
+
+join ptreatment_pet on p.id = ptreatment_pet.id_pet
+join ptreatment as pt on pt.id = ptreatment_pet.id_ptreatment
+
+join disease_pet on p.id = disease_pet.id_pet
+join disease as dis on dis.id = disease_pet.id_disease
+
+where namedis = 'velvet giddy'
