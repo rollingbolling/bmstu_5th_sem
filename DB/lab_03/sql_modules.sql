@@ -91,4 +91,68 @@ from pet
 where id > 5027
 
 --6
+create or replace procedure rise(n int)
+	language plpgsql
+as $$
+	begin
+		if (n < 5) then
+			update pet
+			set weightp = weightp + 1
+			where id = n and weightp < 40;
+			call rise(n + 1);
+		end if;
+	end;
+$$;
 
+call rise(0);
+
+select namep, weightp from pet where id < 5;
+
+--7
+create or replace procedure weightdeg(curroom int)
+	language plpgsql
+as $$
+	declare 
+		curs cursor for 
+			(select * 
+			from pet
+			where roomnumber = curroom);
+	begin
+		update pet set weightp = weightp - 5 where current of curs;
+		close curs;
+	end;
+$$;
+
+--8
+create or replace procedure funcwei()
+	language plpgsql
+as $$
+	begin
+		create table if not exists column_info as
+		select * from information_schema.columns where table_schema = 'public';
+	end;
+$$;
+
+call funcwei();
+select * from column_info;
+
+--9
+create or replace function AlterDeletePet()
+returns trigger as
+$$
+begin
+	raise notice 'deleted % % % % %;',
+	old.id, old.namep, old.gender, old.weightp, old.birthdate;
+	return old;
+end;
+$$ language plpgsql;
+
+create or replace trigger AlterDeletePet
+	after delete
+	on pet
+execute procedure AlterDeletePet();
+
+delete from pet
+where id = 5028;
+
+--10
