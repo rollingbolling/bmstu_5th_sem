@@ -2,6 +2,7 @@
 #define _ALGORITHMS_H_
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 

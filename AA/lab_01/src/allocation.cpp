@@ -18,14 +18,17 @@ int **create_matrix(size_t n, size_t m)
     if (n == 0)
         return nullptr;
 
-    int **mtr = static_cast<int **>(malloc(n * sizeof(int*)));
-    if (mtr != nullptr)
-        for (size_t i = 0; mtr[i] != nullptr && i < n; i++)
-        {
-            mtr[i] = static_cast<int *>(malloc(m * sizeof(int)));
-            if (mtr[i] == nullptr)
-                delete_matrix(mtr, n);
-        }
+    // int **mtr = static_cast<int **>(malloc(n * sizeof(int*)));
+    // if (mtr != nullptr)
+    //     for (size_t i = 0; mtr[i] != nullptr && i < n; i++)
+    //     {
+    //         mtr[i] = static_cast<int *>(malloc(m * sizeof(int)));
+    //         if (mtr[i] == nullptr)
+    //             delete_matrix(mtr, n);
+    //     }
+    int **mtr = new int*[n];
+    for (int i = 0; i < n; i++)
+        mtr[i] = new int[m];    
 
     return mtr;
 }

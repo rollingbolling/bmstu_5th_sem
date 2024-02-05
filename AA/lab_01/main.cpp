@@ -35,7 +35,18 @@ int main()
             wcout << L"Введите второе слово: \n";
             wcin >> def_word2;
 
-
+            
+            res = LevNoRec(def_word1, def_word2, false);
+            wcout << L"\t1)" << res << endl;
+            
+            res = DemLevNoRec(def_word1, def_word2, false);
+            wcout << L"\t2)" << res << endl;
+            
+            res = DemLevNoCache(def_word1, def_word2, false);
+            wcout << L"\t3)" << res << endl;
+            
+            res = DemLevCache(def_word1, def_word2, false);
+            wcout << L"\t4)" << res << endl;
         }
 
         else if (choice == 2)

@@ -1,0 +1,22 @@
+[
+{
+  "directory": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/build",
+  "command": "C:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe    -g   -o CMakeFiles/lab_01.dir/main.cpp.obj -c C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/main.cpp",
+  "file": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/main.cpp"
+},
+{
+  "directory": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/build",
+  "command": "C:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe    -g   -o CMakeFiles/lab_01.dir/src/algorithms.cpp.obj -c C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/src/algorithms.cpp",
+  "file": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/src/algorithms.cpp"
+},
+{
+  "directory": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/build",
+  "command": "C:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe    -g   -o CMakeFiles/lab_01.dir/src/allocation.cpp.obj -c C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/src/allocation.cpp",
+  "file": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/src/allocation.cpp"
+},
+{
+  "directory": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/build",
+  "command": "C:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe    -g   -o CMakeFiles/lab_01.dir/src/print_matrix.cpp.obj -c C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/src/print_matrix.cpp",
+  "file": "C:/Users/danya/Desktop/bmstu_5th_sem/AA/lab_01/src/print_matrix.cpp"
+}
+]

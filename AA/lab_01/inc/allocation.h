@@ -4,7 +4,9 @@
 #include <iostream>
 #include <cstdlib>
 
+using namespace std;
+
 void delete_matrix(int **matrix, size_t n);
 int **create_matrix(size_t n, size_t m);
 
-#endif _ALLOCATION_H_
+#endif //_ALLOCATION_H_

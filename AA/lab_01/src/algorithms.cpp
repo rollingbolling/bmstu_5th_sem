@@ -1,61 +1,74 @@
 #include "../inc/algorithms.h"
 #include "../inc/allocation.h"
+#include "../inc/print_matrix.h"
 
-
-int LevNoRec(wstring &string1, wstring &string2, bool print=false)
+int LevNoRec(wstring &string1, wstring &string2, bool print)
 {
     size_t n = string1.length();
     size_t m = string2.length();
     int **matrix = create_matrix(n+1, m+1);
     int res = 0;
 
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i <= n; i++)
     {
-        for (int j = 1; j <= m; j++)
+        for (int j = 0; j <= m; j++)
         {
-            if (i == 0)
+            if (i == 0 && j == 0)
+                matrix[i][j] = 0;
+            else if (i == 0 && j > 0)
                 matrix[i][j] = j;
-            else if (j == 0)
+            else if (j == 0 && i > 0)
                 matrix[i][j] = i;
-            else if (string1[i - 1] == string2[j - 1])
-                matrix[i][j] = matrix[i - 1][j - 1];
             else
-                matrix[i][j] = min({matrix[i - 1][j], 
-                                    matrix[i - 1][j - 1], 
-                                    matrix[i][j - 1]});  
+            {
+                int cost = 0;
+                if (string1[i - 1] != string2[j - 1])
+                    cost = 1;
+                matrix[i][j] = min({matrix[i - 1][j] + 1, 
+                                    matrix[i - 1][j - 1] + cost, 
+                                    matrix[i][j - 1] + 1});
+                
+            }
         }
     }
+
+    printLevMtr(string1, string2, matrix, n, m);
 
     res = matrix[n][m];
     delete_matrix(matrix, n);
     return res;
 }
 
-int DemLevNoRec(wstring &string1, wstring &string2, bool print=false)
+int DemLevNoRec(wstring &string1, wstring &string2, bool print)
 {
     int res = 0;
     size_t n = string1.length();
     size_t m = string2.length();
     int **matrix = create_matrix(n + 1, m + 1);
 
-    for (size_t i = 1; i <= n; i++)
+    for (size_t i = 0; i <= n; i++)
     {
-        for (size_t j = 1; j <= m; j++)
+        for (size_t j = 0; j <= m; j++)
         {
-            if (i == 0)
+            if (i == 0 && j == 0)
+                matrix[i][j] = 0;
+            else if (i == 0 && j > 0)
                 matrix[i][j] = j;
-            else if (j == 0)
+            else if (j == 0 && i > 0)
                 matrix[i][j] = i;
-            else if (string1[i - 1] == string2[j - 1])
-                matrix[i][j] = matrix[i - 1][j - 1];
             else
-                matrix[i][j] = 1 + min({matrix[i - 1][j], 
-                                        matrix[i - 1][j - 1],
-                                        matrix[i][j - 1]});
+            {
+                int cost = 0;
+                if (string1[i - 1] != string2[j - 1])
+                    cost = 1;
+                matrix[i][j] = min({matrix[i - 1][j] + 1, 
+                                    matrix[i - 1][j - 1] + cost, 
+                                    matrix[i][j - 1] + 1});
 
-            if (i > 1 && j > 1 && \
-            string1[i - 1] == string2[j - 2] && string1[i - 2] == string2[j - 1])
-                matrix[i][j] = min(matrix[i][j], matrix[i - 2][j - 2] + 1);
+                if (i > 1 && j > 1 && \
+                string1[i - 1] == string2[j - 2] && string1[i - 2] == string2[j - 1])
+                    matrix[i][j] = min(matrix[i][j], matrix[i - 2][j - 2] + 1);
+            }
         }
     }
 
@@ -87,7 +100,7 @@ int DemLevRecNoCache(wstring &string1, wstring &string2, size_t n, size_t m)
     return res;
 }
 
-int DemLevNoCache(wstring &string1, wstring &string2)
+int DemLevNoCache(wstring &string1, wstring &string2, bool print)
 {
     return DemLevRecNoCache(string1, string2, string1.length(), string2.length());
 }
@@ -111,7 +124,7 @@ int DemLevRecCache(wstring &string1, wstring &string2, int **matrix, size_t n, s
     return matrix[n][m];
 }
 
-int DemLevCache(wstring &string1, wstring &string2, bool print=false)
+int DemLevCache(wstring &string1, wstring &string2, bool print)
 {
     size_t n = string1.length();
     size_t m = string2.length();
