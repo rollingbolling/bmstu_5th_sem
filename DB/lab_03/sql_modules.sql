@@ -1,10 +1,10 @@
---1 средний вес питомца
+--1 скалярная функция
 create or replace function AvgWeightp() returns float4 as $$
 	select avg(weightp) from pet;
 $$ language sql;
 select AvgWeightp();
 
---2 все питомцы, у которых врач игорь
+--2 подставляемая табличная функция
 create or replace function test()
 	returns table(
 		namep text,
@@ -20,7 +20,7 @@ create or replace function test()
 	
 select * from test();
 
---3
+--3 многооператорная табличная функция
 create or replace function func()
 returns table(namep text, docname text, docsurname text, queu int) as $$
 BEGIN
@@ -49,7 +49,7 @@ $$ language plpgsql;
 	
 select * from func();
 
---4
+--4 рекурсивная функция или функция с рекурсивным отв
 create or replace function pdrec()
 returns table(id int, namep text, weight int, room_number_next int) as $$
 	with recursive most_weight_pet(id, name, weight, room_number_next) as (
@@ -71,12 +71,11 @@ returns table(id int, namep text, weight int, room_number_next int) as $$
 						   where roomnumber = p.roomnumber)
 	)
 	select * from most_weight_pet;
-$$ language sql
-returns null on null input;
+$$ language sql;
 	
 select * from pdrec();
 
---5
+--5 хранимая процедура без параметров или с параметрами
 create or replace procedure pr()
 language sql
 as $$
@@ -90,7 +89,7 @@ select namep
 from pet
 where id > 5027
 
---6
+--6 рекурсивная хранимая функция 
 create or replace procedure rise(n int)
 	language plpgsql
 as $$
@@ -108,7 +107,7 @@ call rise(0);
 
 select namep, weightp from pet where id < 5;
 
---7
+--7 хранимая функция с курсором
 create or replace procedure weightdeg(curroom int)
 	language plpgsql
 as $$
@@ -117,13 +116,22 @@ as $$
 			(select * 
 			from pet
 			where roomnumber = curroom);
+		pet_id int;
 	begin
-		update pet set weightp = weightp - 5 where current of curs;
+		open curs;
+		loop
+			fetch curs into pet_id;
+			exit when not found;
+			raise notice 'pet_id: %', pet_id;
+		end loop;
+		
 		close curs;
 	end;
 $$;
 
---8
+call weightdeg(69);
+
+--8 хранимая процедура с метаданными
 create or replace procedure funcwei()
 	language plpgsql
 as $$
@@ -136,7 +144,7 @@ $$;
 call funcwei();
 select * from column_info;
 
---9
+--9 триггер after
 create or replace function AlterDeletePet()
 returns trigger as
 $$
@@ -155,4 +163,50 @@ execute procedure AlterDeletePet();
 delete from pet
 where id = 5028;
 
---10
+--10 триггер instead of
+create or replace function UpdatePet()
+returns trigger as 
+$$
+	begin
+		raise notice 'pet % % % % %',
+		new.namep, new.gender, new.weightp, new.birthdate, new.roomnumber;
+		
+		insert into pet (namep, gender, weightp, birthdate, roomnumber)
+		values (new.namep, new.gender, new.weightp, new.birthdate, new.roomnumber);
+		
+		return new;
+	end;
+$$ language plpgsql;
+
+create or replace trigger UpdatePet
+	instead of insert on pet_copy
+	for each row
+execute function UpdatePet();
+
+create or replace view pet_copy as
+select * from pet;
+
+insert into pet_copy (id, namep, gender, weightp, birthdate, roomnumber)
+values (default, 'Chester', 'm', 10, '1999-12-12', 69);
+
+select * from pet_copy where id > 4999; 
+
+--defeat
+create or replace procedure proc_param(date1 date, date2 date)
+language sql
+as $$
+begin
+	create temp table temp_vets_stats as 
+		select doc.id, doc.name, doc.surname, count(*) as num_of_pets
+		from pet as p
+		join doctor_pet on p.id = doctor_pet.id_pet
+		join doctor as d on d.id = doctor_pet.id_doctor
+
+		where p.birthdate between date1 and date2;
+	select * from temp_vets_stats;
+	drop table temp_vets_stats;
+
+end;
+$$;
+	
+call proc_param('2018-12-12', '2019-12-12');
