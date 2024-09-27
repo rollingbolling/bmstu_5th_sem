@@ -179,16 +179,23 @@ with dupl(Row) as (select row_number()
 select * from dupl where row = 1;
 
 --имя врача, кличка питомца, duration, namediseas, причины по заданному заболеванию
-select d.namedoc, p.namep, pt.duration, dis.namedis, dis.reasons
-from pet as p
+with docdisfr as (
+	select 
+	dp.id_doctor,
+	d.id as desease_id,
+	d.nameDis as disease_name,
+	count(*) as frequency
+	from doctor_pet dp
 
-join doctor_pet on p.id = doctor_pet.id_pet
-join doctor as d on d.id = doctor_pet.id_doctor
+	join disease_pet dpd on dp.id_pet = dpd.id_pet
+	join disease d on dpd.id_disease = d.id
 
-join ptreatment_pet on p.id = ptreatment_pet.id_pet
-join ptreatment as pt on pt.id = ptreatment_pet.id_ptreatment
+	group by dp.id_doctor, d.id, d.nameDis
+),
 
-join disease_pet on p.id = disease_pet.id_pet
-join disease as dis on dis.id = disease_pet.id_disease
-
-where namedis = 'velvet giddy'
+mostfrdisperdoc as (
+	select 
+	id_doctor, disease_id, disease_name,
+	row_number() over (partition by id_doctor order by frequency) as row_num
+	from docdisfr
+)
