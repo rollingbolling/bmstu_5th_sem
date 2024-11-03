@@ -2,8 +2,8 @@
 #define _ALGORITHMS_H_
 
 int LevNoRec(char *word1, char *word2);
-int Lev(char *word1, char *word2);
-void LevRecCash();
-void DemLevNoRec();
+int LevRecurse(char *word1, char *word2);
+int LevRecCash(char *word1, char *word2);
+int DemLevNoRec(char *word1, char *word2);
 
 #endif
