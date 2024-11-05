@@ -4,6 +4,6 @@
 int LevNoRec(char *word1, char *word2);
 int LevRecurse(char *word1, char *word2);
 int LevRecCash(char *word1, char *word2);
-int DemLevNoRec(char *word1, char *word2);
+int DemLevRec(char *word1, char *word2);
 
 #endif

@@ -5,7 +5,7 @@ OUT_DIR := ./out
 
 CFLAGS := -Wall -Werror -Wextra -I $(INC_DIR)
 
-OBJ_ALL := $(OUT_DIR)/algorithms.o $(OUT_DIR)/alloc_mtrx.o 
+OBJ_ALL := $(OUT_DIR)/algorithms.o $(OUT_DIR)/alloc_mtrx.o $(OUT_DIR)/measurement.o
 OBJ_MAIN := $(OUT_DIR)/main.o
 
 all: app.exe

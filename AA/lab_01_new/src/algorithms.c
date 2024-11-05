@@ -128,30 +128,31 @@ int LevRecCash(char *word1, char *word2)
     return res;
 }
 
-int DemLevNoRec(char *word1, char *word2)
+int DemLevRecIter(char *word1, char *word2, int n, int m)
+{
+    if (n == 0) return m;
+    else if (m == 0) return n;
+
+    int insert = DemLevRecIter(word1, word2, n, m - 1) + 1;
+    int delet = DemLevRecIter(word1, word2, n - 1, m) + 1;
+    int replace = DemLevRecIter(word1, word2, n - 1, m - 1) + (int)(word1[n - 1] != word2[m - 1]);
+    
+    int min_buf = get_min(insert, delet, replace);
+
+    if ((n > 1) && (m > 1) && (word1[n - 1] == word2[m - 2]) && (word1[n - 2] == word2[m - 1]))
+    {
+        int change = DemLevRecIter(word1, word2, n - 2, m - 2) + 1;
+        return (min_buf < change) ? min_buf : change;
+    }
+    
+    return min_buf;
+}
+
+int DemLevRec(char *word1, char *word2)
 {
     int res = -1;
-    int n = strlen(word1) + 1;
-    int m = strlen(word2) + 1;
-    int **mtrx = create_mtrx(n, m);
-    for (int i = 0; i < n; i++)
-        mtrx[i][0] = i;
-    for (int j = 0; j < m; j++)
-        mtrx[0][j] = j;
-    for (int i = 1; i < n; i++)
-        for (int j = 1; j < m; j++)
-        {
-            if (word1[i - 1] == word2[j - 1])
-                mtrx[i][j] = mtrx[i - 1][j - 1];
-            else 
-                mtrx[i][j] = 1 + get_min(mtrx[i - 1][j], mtrx[i][j - 1], mtrx[i - 1][j - 1]);
-        }
-
-    if (mtrx != NULL)
-    {
-        res = mtrx[n - 1][m - 1];
-        delete_mtrx(mtrx, n);
-    }
-
+    int n = strlen(word1);
+    int m = strlen(word2);
+    res = DemLevRecIter(word1, word2, n, m);
     return res;
 }
