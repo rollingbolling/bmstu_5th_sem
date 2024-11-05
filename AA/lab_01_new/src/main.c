@@ -7,13 +7,13 @@ int main()
 {
     int choice = -1;
     char *menu = "\nSelect an option from the menu:\n"
-            "1. Display all algorithms for calculating distances:\n"
+            "  1. Display all algorithms for calculating distances:\n"
             "\t1) Non-recursive Levenshtein distance algorithm\n"
             "\t2) Recursive Levenshtein distance algorithm\n"
             "\t3) Recursive Levenshtein distance algorithm with cash\n"
             "\t4) Recursive Damerau-Levenshtein distance algorithm\n"
-            "2. Measurements and performance evaluation of algorithms\n"
-            "0. Exit the program\n\n";
+            "  2. Measurements and performance evaluation of algorithms\n"
+            "  0. Exit the program\n";
     char string_1[10000], string_2[10000];
     
     while (choice != 0)

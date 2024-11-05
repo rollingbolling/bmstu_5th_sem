@@ -1,33 +1,38 @@
-import matplotlib.pyplot as plt
+import matplotlib.pRecplot as plt
 import csv
 
-X = []
-Y = []
+NoRec = []
+Rec = []
+# RecCash = []
+# DamRec = []
+
 
 with open('measure.csv', 'r') as datafile:
     plotting = csv.reader(datafile, delimiter=' ')
     
     for ROWS in plotting:
-        X.append(float(ROWS[3]))
-        #X.append('{} {}'.format(ROWS[3], ROWS[4]))
-        Y.append(float(ROWS[1]))
+        NoRec.append(float(ROWS[0]))
+        #NoRec.append('{} {}'.format(ROWS[3], ROWS[4]))
+        Rec.append(float(ROWS[1]))
+        # RecCash.append(float(ROWS[2]))
+        # DamRec.append(float(ROWS[3]))
 
-print ('X {} Nums'.format(len(X)))
-print ('Y {} Nums'.format(len(Y)))
+print ('NoRec {} Nums'.format(len(NoRec)))
+print ('Rec {} Nums'.format(len(Rec)))
 
 # threshold=63.0
-# T=[threshold]*len(Y)
+# T=[threshold]*len(Rec)
 
-print ('Type X {} '.format(type(X)))
-print ('Type Y {} '.format(type(Y)))
-print ('Type T {} '.format(type(T)))
+print ('TRecpe NoRec {} '.format(tRecpe(NoRec)))
+print ('TRecpe Rec {} '.format(tRecpe(Rec)))
+# print ('TRecpe T {} '.format(tRecpe(T)))
 
-plt.plot(X, Y)
-plt.plot(X, T)
+plt.plot(NoRec, Rec)
+# plt.plot(NoRec, T)
 plt.title('Illumination change')
-plt.xlabel('Time,[s]')
-plt.ylabel('Light level, [Lx]')
+plt.NoReclabel('Time,[s]')
+plt.Reclabel('Light level, [LNoRec]')
 plt.grid()
-# plt.xticks(rotation=-90)
-plt.legend(['illumination', 'threshold {} Lx'.format(threshold)])
+# plt.NoRecticks(rotation=-90)
+plt.legend(['illumination', 'threshold {} LNoRec'.format(threshold)])
 plt.show()
