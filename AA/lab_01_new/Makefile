@@ -21,5 +21,6 @@ object_dir:
 	@mkdir -p $(OUT_DIR)
 
 clean:
-	rm -rf $(OUT_DIR)\*.o
+	rm -rf $(OUT_DIR)/*.o
+	rm -rf $(OUT_DIR)
 	rm -rf app.exe
