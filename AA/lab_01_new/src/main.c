@@ -1,7 +1,9 @@
+#include <stdlib.h>
 #include "algorithms.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include "measurement.h"
+#include <string.h>
+#include "alloc_mtrx.h"
 
 int main()
 {
@@ -22,20 +24,28 @@ int main()
         scanf("%d", &choice);
         if (choice == 1)
         {
+            static int **cash = NULL;
             printf("Input two words:\n");
             scanf("%s", string_1);
             scanf("%s", string_2);
+            int n = strlen(string_1);
+            int m = strlen(string_2);
             printf("1) %d\n", LevNoRec(string_1, string_2));
-            printf("2) %d\n", LevRecurse(string_1, string_2));
-            printf("3) %d\n", LevRecCash(string_1, string_2));
+            printf("2) %d\n", LevRec(string_1, string_2, n, m));
+            printf("3) %d\n", LevRecCash(string_1, string_2, n, m, cash));
             printf("4) %d\n", DemLevNoRec(string_1, string_2));
+            if (cash != NULL)
+            {
+                printf("\nF\n");
+                delete_mtrx(cash, n + 1);
+            }
         }
         if (choice == 2)
         {
             printf("Input iters:\n");
-            int iters = 1;
-            if (scanf("%d", &iters) == 1)
-                time_measure(iters);
+            // int iters = 1;
+            // if (scanf("%d", &iters) == 1)
+            //     time_measure(iters);
         }
     }
 

@@ -84,48 +84,27 @@ int LevRec(char *string_1, char *string_2, int n, int m)
     return 1 + get_min(insert, remove, replace);
 }
 
-int LevRecurse(char *string_1, char *string_2)
+int LevRecCash(char *string_1, char *string_2, int n, int m, int **cash)
 {
-    return LevRec(string_1, string_2, strlen(string_1), strlen(string_2));
-}
-
-void LevRecCashIter(char *string_1, char *string_2, int n, int m, int **cash)
-{
-    if (n == 0) cash[n][m] = m;
-    else if (m == 0) cash[n][m] = n;
-    else
+    if (cash == NULL)
     {
-        if (cash[n][m - 1] == -1)
-            LevRecCashIter(string_1, string_2, n, m - 1, cash);
-        if (cash[n - 1][m] == -1)
-            LevRecCashIter(string_1, string_2, n - 1, m, cash);
-        if (cash[n - 1][m - 1] == -1)
-            LevRecCashIter(string_1, string_2, n - 1, m - 1, cash);
-    
-        cash[n][m] = get_min(cash[n][m - 1] + 1,
-                             cash[n - 1][m] + 1,
-                             cash[n - 1][m - 1] + (int)(string_1[n-1] != string_2[m-1]));
+        cash = create_mtrx(n + 1, m + 1);
+        set_mtrx(cash, n + 1, m + 1, -1);
     }
-}
+    if (n == 0) return m;
+    else if (m == 0) return n;
+    else if (cash[n][m] != -1) return cash[n][m];
+    int cost = (string_1[n-1] != string_2[m-1]) ? 1 : 0;
+    int insert = LevRecCash(string_1, string_2, n, m - 1, cash) + 1;
+    int remove = LevRecCash(string_1, string_2, n - 1, m, cash) + 1;
+    int replace = LevRecCash(string_1, string_2, n - 1, m - 1, cash) + cost;
+    cash[n][m] = get_min(
+        insert,
+        remove,
+        replace
+    );
 
-int LevRecCash(char *string_1, char *string_2)
-{
-    int result = -1;
-
-    int n = strlen(string_1) + 1;
-    int m = strlen(string_2) + 1;
-    
-    int **mtrx = create_mtrx(n, m);
-    
-    if (mtrx != NULL)
-    {
-        set_mtrx(mtrx, n, m, -1);
-        LevRecCashIter(string_1, string_2, n - 1, m - 1, mtrx);
-        result = mtrx[n - 1][m - 1];
-        if (mtrx != NULL) delete_mtrx(mtrx, n);
-    }
-
-    return result;
+    return cash[n][m];
 }
 
 int DemLevNoRec(char *string_1, char *string_2)
