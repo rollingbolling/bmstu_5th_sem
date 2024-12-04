@@ -2,7 +2,6 @@
 #include "alloc_mtrx.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
 
 void print_mtrx(int **mtrx, int n, int m)
@@ -84,20 +83,16 @@ int LevRec(char *string_1, char *string_2, int n, int m)
     return 1 + get_min(insert, remove, replace);
 }
 
-int LevRecCash(char *string_1, char *string_2, int n, int m, int **cash)
+int LevRecCashIter(char *string_1, char *string_2, int n, int m, int **cash)
 {
-    if (cash == NULL)
-    {
-        cash = create_mtrx(n + 1, m + 1);
-        set_mtrx(cash, n + 1, m + 1, -1);
-    }
+    if (cash == NULL) return -1;
     if (n == 0) return m;
     else if (m == 0) return n;
     else if (cash[n][m] != -1) return cash[n][m];
     int cost = (string_1[n-1] != string_2[m-1]) ? 1 : 0;
-    int insert = LevRecCash(string_1, string_2, n, m - 1, cash) + 1;
-    int remove = LevRecCash(string_1, string_2, n - 1, m, cash) + 1;
-    int replace = LevRecCash(string_1, string_2, n - 1, m - 1, cash) + cost;
+    int insert = LevRecCashIter(string_1, string_2, n, m - 1, cash) + 1;
+    int remove = LevRecCashIter(string_1, string_2, n - 1, m, cash) + 1;
+    int replace = LevRecCashIter(string_1, string_2, n - 1, m - 1, cash) + cost;
     cash[n][m] = get_min(
         insert,
         remove,
@@ -105,6 +100,20 @@ int LevRecCash(char *string_1, char *string_2, int n, int m, int **cash)
     );
 
     return cash[n][m];
+}
+
+int LevRecCash(char *string_1, char *string_2, int n, int m)
+{
+    int **cash = create_mtrx(n+1, m+1);
+    int result = 0;
+    if (cash != NULL)
+    {
+        set_mtrx(cash, n + 1, m + 1, -1);
+        result = LevRecCashIter(string_1, string_2, n, m, cash);
+        delete_mtrx(cash, n + 1);
+    }
+
+    return result;
 }
 
 int DemLevNoRec(char *string_1, char *string_2)

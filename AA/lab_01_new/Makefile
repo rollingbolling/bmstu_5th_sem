@@ -3,7 +3,7 @@ SRC_DIR := ./src
 INC_DIR := ./inc
 OUT_DIR := ./out
 
-CFLAGS := -Wall -Werror -Wextra -I $(INC_DIR)
+CFLAGS := -Wall -Werror -Wextra -ggdb -I$(INC_DIR)
 
 OBJ_ALL := $(OUT_DIR)/algorithms.o $(OUT_DIR)/alloc_mtrx.o $(OUT_DIR)/measurement.o
 OBJ_MAIN := $(OUT_DIR)/main.o
