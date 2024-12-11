@@ -192,6 +192,30 @@ values (default, 'Chester', 'm', 10, '1999-12-12', 69);
 select * from pet_copy where id > 4999; 
 
 --defeat
+create or replace function delete_pet_if_no_doctor()
+returns trigger as $$
+begin
+	if not exists (
+		select 1 from doctor_pet 
+		where id_pet = new.id
+	) then 
+	delete from pet where id = new.id;
+	raise notice "pet with id % deleted due to lack of docotor",
+	new.id;
+	end if;
+	return new;
+end;
+$$ language plpgsql;
+
+create trigger check_doctor_before_insert
+before insert on pet 
+for each row execute function delete_pet_if_no_doctor();
+
+create trigger check_doctor_after_update
+after update on pet 
+for each row execute function delete_pet_if_no_doctor();
+
+--defeat
 create or replace procedure proc_param(date1 date, date2 date)
 language sql
 as $$
