@@ -7,12 +7,12 @@ MENU = "Menu:\n" \
        "4. Выполнить запрос к метаданным;\n" \
        "5. Вызвать скалярную функцию (написанную в третьей лабораторной работе);\n"\
        "6. Вызвать многооператорную или табличную функцию \
-           (написанную в третьей лабораторной работе);\n" \
+(написанную в третьей лабораторной работе);\n" \
        "7. Вызвать хранимую процедуру (написанную в третьей лабораторной работе);\n" \
        "8. Вызвать системную функцию или процедуру;\n" \
        "9. Создать таблицу в базе данных, соответствующую тематике БД;\n" \
        "10. Выполнить вставку данных в созданную таблицу с использованием  \
-           инструкции INSERT или COPY.\n"
+инструкции INSERT или COPY.\n"
 
 def input_command():
     try:
@@ -36,23 +36,23 @@ def main():
         if command == 1:
             VC.get_scalar_query()
         elif command == 2:
-            pass
+            VC.get_join_query()
         elif command == 3:
-            pass
+            VC.get_otb_query()
         elif command == 4:
-            pass
+            VC.get_metadata_query()
         elif command == 5:
-            pass
+            VC.get_scalar_func()
         elif command == 6:
-            pass
+            VC.call_multioper_query()
         elif command == 7:
-            pass
+            VC.get_stored_proc()
         elif command == 8:
-            pass
+            VC.get_sys_func()
         elif command == 9:
-            pass
+            VC.create_table()
         elif command == 10:
-            pass
+            VC.insert_data()
         else:
             continue
   
