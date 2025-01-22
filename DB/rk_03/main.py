@@ -10,84 +10,72 @@ from operator import and_
 
 Base = declarative_base()
 
-class Staff(Base):
-    __tablename__ = 'staff'
+class Satellite(Base):
+    __tablename__ = 'satellite'
     id = Column(Integer, primary_key=True,  autoincrement=True)
-    fio = Column(Text, nullable=False)
-    birthday = Column(Date, default=time.time())
-    department = Column(Text)
+    name_satel = Column(Text, nullable=False)
+    date_maded = Column(Date, default=time.time())
+    country = Column(Text, nullable=False)
 
-class Staff_track(Base):
-    __tablename__ = 'staff_track'
+class Flight(Base):
+    __tablename__ = 'flight'
     id = Column(Integer, primary_key=True)
-    id_staff = Column(Integer, ForeignKey("staff.id"), nullable=False)
-    date = Column(Date, default=time.time())
+    id_satel = Column(Integer, ForeignKey("satellite.id"), nullable=False)
+    date_launch = Column(Date, default=time.time())
     dayofweek = Column(Text, CheckConstraint(f"days in {DAYS}"), nullable=False)
-    time = Column("time", Time, default=time.time())
+    time_launch = Column("time", Time, default=time.time())
     type = Column("type", Integer, CheckConstraint("type = 1 or type = 2"))
-    staff_fk = relationship("Staff", foreign_keys=[id_staff])
+    satellite_fk = relationship("Satellite", foreign_keys=[id_satel])
 
 #1
-#найти отделы, в которых работает хотя бы один Иванов
-def get_may_staff(session):
+#найти все страны, в которых создано более 10 спутников
+def get_countrys(session):
     res = session.execute(f"""
-        SELECT DISTINCT department 
-        FROM staff 
-        WHERE fio LIKE '%Иванов%';
+        SELECT country
+        FROM satellite
+        GROUP BY country
+        HAVING COUNT(id) > 10;
     """)
     return res.fetchall()
 
-def get_deps_like_Ivanov(session):
-    query = session.query(Staff.department)\
-    .filter(Staff.fio.like('%Иванов%'))\
-    .distinct()\
+def get_countrys_more_10(session):
+    query = session.query(Satellite.country)\
+    .group_by(Satellite.country)\
+    .having(func.count(Satellite.id) > 10)\
     .all()
 
     result = query.all()
     return result
 
 #2
-#найти сотрудников которые не выходят с рабочего места в течении всего рабочего дня 
-def get_may_staff(session):
+#найти аппараты, которые приземлялись более чем на 100 дней 
+def get_satellites_sql(session):
     res = session.execute(f"""
-        SELECT s.fio, st.date
-        FROM staff s 
-        LEFT JOIN staff_track st ON s.id = st.id_staff 
-        GROUP BY st.date, s.fio
-        HAVING COUNT(st.id) <= 3;
+        SELECT s.name_satel
+        FROM satellite s
+        JOIN flight f1 ON s.id = f1.id_satel
+        JOIN flight f2 ON s.id = f2.id_satel
+        WHERE f1.type = 1 AND f2.type = 0 
+        AND f2.date_launch > f1.date_launch
+        AND f2.date_launch - f1.date_launch > 100;
     """)
     return res.fetchall()
 
-def get_employes_dont_exit(session):
-    query = session.query(Staff.fio, StaffTrack.date) \
-    .outerjoin(StaffTrack, Staff.id == StaffTrack.id_staff) \
-    .group_by(StaffTrack.date, Staff.fio) \
-    .having(func.count(StaffTrack.id) <= 3) \
-    .all()
+def get_satellites(session):
+    FlightLaunch = aliased(Flight)
+    FlightLanding = aliased(Flight)
 
-    result = query.all()
-    return result
-
-
-
-#3
-#найти все оттделы в которых есть сотрудники опоздавшие в определенную дату. дату задавать динамическим параметром
-def get_may_staff(session):
-    res = session.execute(f"""
-        SELECT DISTINCT s.department, st.time
-        FROM staff s 
-        JOIN staff_track st ON s.id = st.id_staff 
-        WHERE st.date = :target_date AND st.time > '09:00:00';
-    """)
-    return res.fetchall()
-
-def get_employes_dont_exit(session):
-    query = session.query(Staff.department)\
-    .join(Staff_track, Staff.id == Staff_track.id_staff)\
-    .filter(Staff_track.date == target_date, Staff_track.time > '09:00:00')\
-    .distinct()\
-    .all()
-
+    query = session.query(Satellite.name_satel) \
+        .join(FlightLaunch, Satellite.id == FlightLaunch.id_satel) \
+        .join(FlightLanding, Satellite.id == FlightLanding.id_satel) \
+        .filter(
+            FlightLaunch.type == 1,
+            FlightLanding.type == 0,
+            FlightLanding.date_launch > FlightLaunch.date_launch,
+            (FlightLanding.date_launch - FlightLaunch.date_launch) > 100
+        ) \
+        .distinct() \
+        .all()
 
     result = query.all()
     return result
