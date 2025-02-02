@@ -1,0 +1,69 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{lev-damlev-analysis}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=a97a15a6e10837c6a56ccde2f37e889e}{%
+           family={А.},
+           familyi={А\bibinitperiod},
+           given={Погорелов\bibnamedelima Д.},
+           giveni={П\bibinitperiod\bibinitdelim Д\bibinitperiod}}}%
+        {{hash=bc5b58e510c3243384df89cc4f78f2a8}{%
+           family={М.},
+           familyi={М\bibinitperiod},
+           given={Таразанов\bibnamedelima А.},
+           giveni={Т\bibinitperiod\bibinitdelim А\bibinitperiod}}}%
+      }
+      \strng{namehash}{288be189800bd8546e9ac6cb52dcb4a3}
+      \strng{fullhash}{288be189800bd8546e9ac6cb52dcb4a3}
+      \strng{fullhashraw}{288be189800bd8546e9ac6cb52dcb4a3}
+      \strng{bibnamehash}{288be189800bd8546e9ac6cb52dcb4a3}
+      \strng{authorbibnamehash}{288be189800bd8546e9ac6cb52dcb4a3}
+      \strng{authornamehash}{288be189800bd8546e9ac6cb52dcb4a3}
+      \strng{authorfullhash}{288be189800bd8546e9ac6cb52dcb4a3}
+      \strng{authorfullhashraw}{288be189800bd8546e9ac6cb52dcb4a3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Режим доступа: \url{https://elibrary.ru/item.asp?id=36907767} (дата обращения 01.10.2024).}
+      \field{journaltitle}{Синергия Наук}
+      \field{title}{Сравнительный анализ алгоритмов редакционного расстояния Левенштейна и Дамерау-Левенштейна}
+      \field{year}{2019}
+    \endentry
+    \entry{python-lang}{misc}{}{}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Режим доступа: \url{https://www.python.org} (дата обращения: 01.10.2024).}
+      \field{title}{Welcome to Python [Электронный ресурс]}
+    \endentry
+    \entry{python-lang-time}{misc}{}{}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Режим доступа: \url{https://docs.python.org/3/library/time.html} (дата обращения: 01.10.2024).}
+      \field{title}{time — Time access and conversions [Электронный ресурс]}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
