@@ -52,7 +52,7 @@ void process_url(int index, const std::vector<std::string>& urls) {
     static std::mutex mtx; // Защита общих ресурсов
     std::lock_guard<std::mutex> lock(mtx);
 
-    std::string filename = std::string(OUTPUT_DIR) + "multi_" + std::to_string(index) + ".txt";
+    std::string filename = OUTPUT_DIR + "multi_" + std::to_string(index) + ".txt";
     std::string url = urls[index];
 
     fetch_and_save(url, filename);
@@ -66,17 +66,31 @@ double measure_multithreaded(const std::vector<std::string>& urls, int num_threa
         clock_t start = clock();
 
         std::vector<std::thread> workers;
-        for (size_t i = 0; i < urls.size(); i += num_threads) {
-            for (int j = 0; j < num_threads && i + j < urls.size(); ++j) {
-                workers.emplace_back(process_url, i + j, std::ref(urls));
-            }
+        std::mutex index_mutex; // Мьютекс для защиты индекса
+        int index = 0;
 
-            for (auto& t : workers) {
-                if (t.joinable()) {
-                    t.join();
+        // Создаем потоки
+        for (int t = 0; t < num_threads; ++t) {
+            workers.emplace_back([&, t] {
+                while (true) {
+                    int current_index;
+                    {
+                        std::lock_guard<std::mutex> lock(index_mutex);
+                        if (index >= static_cast<int>(urls.size())) {
+                            break; // Все задачи выполнены
+                        }
+                        current_index = index++;
+                    }
+                    process_url(current_index, urls);
                 }
+            });
+        }
+
+        // Ждем завершения всех потоков
+        for (auto& t : workers) {
+            if (t.joinable()) {
+                t.join();
             }
-            workers.clear();
         }
 
         clock_t end = clock();
@@ -94,7 +108,7 @@ double measure_single_threaded(const std::vector<std::string>& urls, int iterati
         clock_t start = clock();
 
         for (size_t i = 0; i < urls.size(); ++i) {
-            std::string filename = std::string(OUTPUT_DIR) + "one_" + std::to_string(i) + ".txt";
+            std::string filename = OUTPUT_DIR + "one_" + std::to_string(i) + ".txt";
             fetch_and_save(urls[i], filename);
         }
 
@@ -148,13 +162,12 @@ int main() {
     }
 
     // Создаем директорию для вывода
-    // mkdir(OUTPUT_DIR, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    // std::ofstream file("res.txt");
+    mkdir(OUTPUT_DIR, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
     // Тестирование однопоточного режима
     double single_time = measure_single_threaded(urls, test_count);
     std::cout << "Однопоточный режим: " << single_time << " секунд" << std::endl;
-    
+
     // Тестирование многопоточного режима
     for (int threads = 1; threads <= 64; threads *= 2) {
         double multi_time = measure_multithreaded(urls, threads, test_count);
