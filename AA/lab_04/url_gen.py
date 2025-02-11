@@ -1,8 +1,7 @@
 import requests as re
 import bs4
-import html.parser
 
-LIMIT = 100
+LIMIT = 200
 FILE_URLS = "urls.txt"
 URL = "https://1001retsept.ru"
 CLASSES = [
