@@ -17,9 +17,9 @@ def inter(x, y):
     return interpolated_y
 
 x = [0, 1, 2, 4, 8, 16, 32, 48, 64]
-y = [32.33, 35.71, 30.85, 27.95, 24.12, 16.22, 11.38, 12.5, 11.44]
+y = [31.24, 34.82, 30.73, 26.45, 24.03, 15.92, 11.05, 12.4, 11.66]
 
-plt.plot(x, y, '*', c="blue")
+plt.plot(x, y, '.', c="blue")
 plt.plot(x, inter(x, y), '--', c="blue")
 
 plt.grid(True)

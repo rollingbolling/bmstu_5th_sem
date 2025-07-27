@@ -31,11 +31,8 @@ class Matrix():
         for i in range(self.__n):
             for j in range(self.__m):
                 self.mtrx[i][j] = randint(MIN_RAND, MAX_RAND)
-                
-def input_mtrx_size():
-    size = input('Input matrix size using space: ')
     
-def default_mult_mtrx(mtrx_1, mtrx_2) -> list[[int][int]]:
+def default_mult_mtrx(mtrx_1, mtrx_2):
     n, m = mtrx_1.get_size()
     q, p = mtrx_2.get_size()
     if m != q:
@@ -49,7 +46,7 @@ def default_mult_mtrx(mtrx_1, mtrx_2) -> list[[int][int]]:
                     res[i][j] = res[i][j] + mtrx_1[i][k] * mtrx_2[k][j]
         return res
     
-def vinograd_mult_mtrx(mtrx_1, mtrx_2) -> list[[int][int]]:
+def vinograd_mult_mtrx(mtrx_1, mtrx_2):
     n, m = mtrx_1.get_size()
     q, p = mtrx_2.get_size()
     if m != q:
@@ -75,7 +72,7 @@ def vinograd_mult_mtrx(mtrx_1, mtrx_2) -> list[[int][int]]:
                     
         return res
 
-def vinograd_opt_mult_mtrx(mtrx_1, mtrx_2) -> list[[int][int]]:
+def vinograd_opt_mult_mtrx(mtrx_1, mtrx_2):
     n1, m1 = mtrx_1.get_size()
     n2, m2 = mtrx_2.get_size()
     

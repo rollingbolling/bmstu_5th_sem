@@ -1,4 +1,4 @@
-def locate(source: list[int], x: int) -> (int, int):
+def locate(source, x):
     index = -1
     compare = 0
     
@@ -10,7 +10,7 @@ def locate(source: list[int], x: int) -> (int, int):
         
     return index, compare
 
-def bin_locate(source: list[int], x: int) -> (int, int):
+def bin_locate(source, x):
     index = -1
     compare = 0
     
